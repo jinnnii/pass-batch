@@ -1,6 +1,7 @@
 package com.jinnnii.pass.domain;
 
 import com.jinnnii.pass.domain.constant.PackageType;
+import com.jinnnii.pass.domain.converter.PackageTypeConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
@@ -32,6 +33,6 @@ public class PackageEntity extends AuditingField{
     @Column(nullable = false)
     private Integer period;
 
-    @Enumerated(EnumType.STRING) @Column(nullable = false)
+    @Convert(converter = PackageTypeConverter.class) @Column(nullable = false)
     private PackageType type;
 }

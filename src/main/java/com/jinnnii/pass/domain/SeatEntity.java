@@ -1,6 +1,7 @@
 package com.jinnnii.pass.domain;
 
 import com.jinnnii.pass.domain.constant.SeatType;
+import com.jinnnii.pass.domain.converter.SeatTypeConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
@@ -24,7 +25,7 @@ public class SeatEntity {
 
     private String seatName;
 
-    @Enumerated(EnumType.STRING) @Column(nullable = false)
+    @Convert(converter = SeatTypeConverter.class) @Column(nullable = false)
     private SeatType type;
 
     @Column(nullable = false)

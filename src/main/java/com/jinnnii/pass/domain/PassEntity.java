@@ -1,6 +1,7 @@
 package com.jinnnii.pass.domain;
 
 import com.jinnnii.pass.domain.constant.EnterStatus;
+import com.jinnnii.pass.domain.converter.EnterStateConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +34,7 @@ public class PassEntity extends AuditingField{
     @ManyToOne(optional = false) @JoinColumn(name = "packageId")
     private PackageEntity packageEntity;
 
-    @Enumerated(EnumType.STRING) @Column(nullable = false)
+    @Convert(converter = EnterStateConverter.class) @Column(nullable = false)
     private EnterStatus status;
 
     private LocalDateTime remainingTime;

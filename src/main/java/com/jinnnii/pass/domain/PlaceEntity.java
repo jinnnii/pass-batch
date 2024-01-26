@@ -1,6 +1,7 @@
 package com.jinnnii.pass.domain;
 
 import com.jinnnii.pass.domain.constant.ActiveStatus;
+import com.jinnnii.pass.domain.converter.ActiveStatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
@@ -25,13 +26,14 @@ public class PlaceEntity extends AuditingField{
     private Long placeId;
     
     @OneToOne(optional = false, fetch = FetchType.LAZY) @JoinColumn(name = "userId", nullable = false)
+    @ToString.Exclude
     private UserEntity userEntity;
 
     private String address;
     private Double latitude;
     private Double longitude;
 
-    @Enumerated(EnumType.STRING) @Column(nullable = false)
+    @Convert(converter = ActiveStatusConverter.class) @Column(nullable = false)
     private ActiveStatus status;
 
     @OneToMany(mappedBy = "placeEntity", cascade = CascadeType.ALL)

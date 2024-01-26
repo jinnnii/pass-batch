@@ -1,7 +1,9 @@
 package com.jinnnii.pass.domain;
 
 import com.jinnnii.pass.domain.constant.ActiveStatus;
-import com.jinnnii.pass.domain.constant.UserRole;
+import com.jinnnii.pass.domain.constant.RoleType;
+import com.jinnnii.pass.domain.converter.ActiveStatusConverter;
+import com.jinnnii.pass.domain.converter.RoleTypeConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
@@ -17,13 +19,15 @@ public class UserEntity extends AuditingField{
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING) @Column(nullable = false)
-    private UserRole role;
+    @Convert(converter = RoleTypeConverter.class) @Column(nullable = false)
+    private RoleType role;
 
-    @Enumerated(EnumType.STRING) @Column(nullable = false)
+    @Convert(converter =  ActiveStatusConverter.class) @Column(nullable = false)
     private ActiveStatus status;
 
     private String region;
     private Integer phone;
+
+    @Lob
     private String meta;
 }

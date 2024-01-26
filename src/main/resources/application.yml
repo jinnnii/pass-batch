@@ -9,4 +9,4 @@ spring:
       maximum-pool-size: 20
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update

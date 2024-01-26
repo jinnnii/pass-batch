@@ -1,6 +1,7 @@
 package com.jinnnii.pass.domain;
 
 import com.jinnnii.pass.domain.constant.ActiveStatus;
+import com.jinnnii.pass.domain.converter.ActiveStatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +32,7 @@ public class EntranceEntity extends AuditingField{
     @OneToOne(optional = false) @JoinColumn(name="seatId")
     private SeatEntity seatEntity;
 
-    @Enumerated(EnumType.STRING) @Column(nullable = false)
+    @Convert(converter = ActiveStatusConverter.class) @Column(nullable = false)
     private ActiveStatus status;
     private String qrCode;
 
