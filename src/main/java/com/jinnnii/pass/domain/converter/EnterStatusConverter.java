@@ -5,7 +5,7 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter
-public class EnterStateConverter implements AttributeConverter<EnterStatus, String> {
+public class EnterStatusConverter implements AttributeConverter<EnterStatus, String> {
     @Override
     public String convertToDatabaseColumn(EnterStatus attribute) {
         return attribute.name();
