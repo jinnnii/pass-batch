@@ -6,12 +6,14 @@ import com.jinnnii.pass.domain.converter.ActiveStatusConverter;
 import com.jinnnii.pass.domain.converter.RoleTypeConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @ToString(callSuper = true)
-@Table(name = "user")
+@Table(name = "user_account")
 public class UserEntity extends AuditingField{
     @Id
     private String userId;
@@ -30,4 +32,18 @@ public class UserEntity extends AuditingField{
 
     @Lob
     private String meta;
+
+    public static UserEntity of(String userId, String password, RoleType role, ActiveStatus status){
+        return new UserEntity(userId, password, role,status, null, null,null);
+    }
+
+    private UserEntity(String userId, String password, RoleType role, ActiveStatus status, String region, Integer phone, String meta) {
+        this.userId = userId;
+        this.password = password;
+        this.role = role;
+        this.status = status;
+        this.region = region;
+        this.phone = phone;
+        this.meta = meta;
+    }
 }

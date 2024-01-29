@@ -4,6 +4,8 @@ import com.jinnnii.pass.domain.constant.PackageType;
 import com.jinnnii.pass.domain.converter.PackageTypeConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 /**
  * [패키지]
@@ -15,24 +17,37 @@ import lombok.ToString;
 @Getter
 @Entity
 @ToString(callSuper = true)
+@NoArgsConstructor
 @Table(name = "package")
 public class PackageEntity extends AuditingField{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long packageId;
 
-    @ManyToOne(optional = false) @JoinColumn(name="placeId", nullable = false)
+    @Setter @ManyToOne(optional = false) @JoinColumn(name="placeId", nullable = false)
     private PlaceEntity placeEntity;
 
-    @Column(nullable = false)
+    @Setter @Column(nullable = false)
     private String packageName;
 
-    @Column(nullable = false)
+    @Setter @Column(nullable = false)
     private Integer price;
 
-    @Column(nullable = false)
+    @Setter @Column(nullable = false)
     private Integer period;
 
-    @Convert(converter = PackageTypeConverter.class) @Column(nullable = false)
+    @Setter @Convert(converter = PackageTypeConverter.class) @Column(nullable = false)
     private PackageType type;
+
+    public static PackageEntity of(PlaceEntity placeEntity, String packageName, Integer price, Integer period, PackageType type) {
+        return new PackageEntity(placeEntity, packageName,price,period,type);
+    }
+
+    private PackageEntity(PlaceEntity placeEntity, String packageName, Integer price, Integer period, PackageType type) {
+        this.placeEntity = placeEntity;
+        this.packageName = packageName;
+        this.price = price;
+        this.period = period;
+        this.type = type;
+    }
 }

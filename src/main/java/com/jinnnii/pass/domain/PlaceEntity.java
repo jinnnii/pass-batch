@@ -4,6 +4,7 @@ import com.jinnnii.pass.domain.constant.ActiveStatus;
 import com.jinnnii.pass.domain.converter.ActiveStatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.LinkedHashSet;
@@ -18,12 +19,15 @@ import java.util.Set;
  */
 @Getter
 @Entity
+@NoArgsConstructor
 @ToString(callSuper = true)
 @Table(name = "place")
 public class PlaceEntity extends AuditingField{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeId;
+
+    @Column(nullable = false) private String placeName;
     
     @OneToOne(optional = false, fetch = FetchType.LAZY) @JoinColumn(name = "userId", nullable = false)
     @ToString.Exclude
@@ -39,4 +43,18 @@ public class PlaceEntity extends AuditingField{
     @OneToMany(mappedBy = "placeEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
     private Set<SeatEntity> seats = new LinkedHashSet<>();
+
+    public static PlaceEntity of(String placeName, UserEntity userEntity, ActiveStatus status){
+        return new PlaceEntity(placeName, userEntity, null, null, null, status, null);
+    }
+
+    private PlaceEntity(String placeName, UserEntity userEntity, String address, Double latitude, Double longitude, ActiveStatus status, Set<SeatEntity> seats) {
+        this.placeName = placeName;
+        this.userEntity = userEntity;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.status = status;
+        this.seats = seats;
+    }
 }

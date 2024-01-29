@@ -1,9 +1,10 @@
 package com.jinnnii.pass.domain;
 
-import com.jinnnii.pass.domain.constant.EnterStatus;
-import com.jinnnii.pass.domain.converter.EnterStateConverter;
+import com.jinnnii.pass.domain.constant.PassStatus;
+import com.jinnnii.pass.domain.converter.PassStatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -21,6 +22,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @ToString(callSuper = true)
 @Table(name = "pass")
 public class PassEntity extends AuditingField{
@@ -34,8 +36,8 @@ public class PassEntity extends AuditingField{
     @ManyToOne(optional = false) @JoinColumn(name = "packageId")
     private PackageEntity packageEntity;
 
-    @Convert(converter = EnterStateConverter.class) @Column(nullable = false)
-    private EnterStatus status;
+    @Convert(converter = PassStatusConverter.class) @Column(nullable = false)
+    private PassStatus status;
 
     private LocalDateTime remainingTime;
     private LocalDateTime startedAt;
@@ -47,4 +49,16 @@ public class PassEntity extends AuditingField{
     @ToString.Exclude
     @OrderBy("createdAt desc")
     private Set<EntranceEntity> entrances = new LinkedHashSet<>();
+
+
+    public static PassEntity of (UserEntity userEntity, PackageEntity packageEntity, PassStatus status, LocalDateTime startedAt, LocalDateTime endedAt){
+        return new PassEntity(userEntity, packageEntity, status, startedAt, endedAt);
+    }
+    private PassEntity(UserEntity userEntity, PackageEntity packageEntity, PassStatus status, LocalDateTime startedAt, LocalDateTime endedAt) {
+        this.userEntity = userEntity;
+        this.packageEntity = packageEntity;
+        this.status = status;
+        this.startedAt = startedAt;
+        this.endedAt = endedAt;
+    }
 }
