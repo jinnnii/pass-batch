@@ -1,7 +1,6 @@
 package com.jinnnii.pass.job.pass;
 
 import com.jinnnii.pass.domain.PassEntity;
-import com.jinnnii.pass.domain.constant.EnterStatus;
 import com.jinnnii.pass.domain.constant.PassStatus;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.batch.core.Job;
@@ -13,7 +12,6 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaCursorItemReader;
-import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilder;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
@@ -28,20 +26,24 @@ public class ExpiredPassesJobConfig {
     private final int CHUNK_SIZE = 5;
 
     private final EntityManagerFactory entityManagerFactory;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
 
-    public ExpiredPassesJobConfig(EntityManagerFactory entityManagerFactory) {
+    public ExpiredPassesJobConfig(EntityManagerFactory entityManagerFactory, JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         this.entityManagerFactory = entityManagerFactory;
+        this.jobRepository = jobRepository;
+        this.transactionManager = transactionManager;
     }
 
     @Bean
-    public Job expiredPassesJob(JobRepository jobRepository, Step step){
+    public Job expiredPassesJob(){
         return new JobBuilder("expiredPassesJob", jobRepository)
-                .start(step)
+                .start(expiredPassesStep())
                 .build();
     }
 
     @Bean
-    public Step expiredPassesStep(JobRepository jobRepository, PlatformTransactionManager transactionManager){
+    public Step expiredPassesStep(){
         return new StepBuilder("expiredPassesStep", jobRepository)
                 .<PassEntity, PassEntity>chunk(CHUNK_SIZE, transactionManager)
                 .reader(expiredPassesItemReader())
