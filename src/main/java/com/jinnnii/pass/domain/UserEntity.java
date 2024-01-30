@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Entity
 @NoArgsConstructor
@@ -32,6 +35,9 @@ public class UserEntity extends AuditingField{
 
     @Lob
     private String meta;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserGroupEntity> userGroups = new LinkedHashSet<>();
 
     public static UserEntity of(String userId, String password, RoleType role, ActiveStatus status){
         return new UserEntity(userId, password, role,status, null, null,null);
