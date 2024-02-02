@@ -26,6 +26,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +69,8 @@ class ExpiredPassesJobConfigTest {
             UserEntity userEntity = getSavedTestUser(i);
             PassEntity pass = PassEntity.of(
                     userEntity, packageEntity,
-                    PassStatus.PROGRESSED, now.minusDays(60), now.minusMinutes(1));
+                    PassStatus.PROGRESSED, now.minusDays(60), now.minusMinutes(1),
+                    LocalTime.of(4,0));
             passEntityList.add(pass);
         }
         passRepository.saveAll(passEntityList);

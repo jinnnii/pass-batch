@@ -3,9 +3,7 @@ package com.jinnnii.pass.domain;
 import com.jinnnii.pass.domain.constant.ActiveStatus;
 import com.jinnnii.pass.domain.converter.ActiveStatusConverter;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +16,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @ToString(callSuper = true)
 @Table(name = "entrance")
@@ -29,13 +28,25 @@ public class EntranceEntity extends AuditingField{
     @ManyToOne(optional = false) @JoinColumn(name="passId")
     private PassEntity passEntity;
 
-    @OneToOne(optional = false) @JoinColumn(name="seatId")
+    @OneToOne(optional = false) @JoinColumn(name="seatId") @Setter
     private SeatEntity seatEntity;
 
-    @Convert(converter = ActiveStatusConverter.class) @Column(nullable = false)
+    @Convert(converter = ActiveStatusConverter.class) @Column(nullable = false) @Setter
     private ActiveStatus status;
     private String qrCode;
 
     private LocalDateTime startedAt;
-    private LocalDateTime endedAt;
+    @Setter private LocalDateTime endedAt;
+
+    public static EntranceEntity of(PassEntity passEntity, SeatEntity seatEntity, ActiveStatus status, LocalDateTime startedAt) {
+        return new EntranceEntity(passEntity, seatEntity, status, null, startedAt);
+    }
+
+    private EntranceEntity(PassEntity passEntity, SeatEntity seatEntity, ActiveStatus status, String qrCode, LocalDateTime startedAt) {
+        this.passEntity = passEntity;
+        this.seatEntity = seatEntity;
+        this.status = status;
+        this.qrCode = qrCode;
+        this.startedAt = startedAt;
+    }
 }

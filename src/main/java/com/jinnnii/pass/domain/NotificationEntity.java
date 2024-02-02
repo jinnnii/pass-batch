@@ -21,6 +21,6 @@ public class NotificationEntity extends AuditingField {
     @Column(nullable = false) private String text;
     @Convert(converter = NotificationEventConverter.class)
     @Column(nullable = false) private NotificationEvent event;
-    @Column(nullable = false) private Boolean sent;
+    @Column(nullable = false) private Boolean sent = false;
     private LocalDateTime sentAt;
 }

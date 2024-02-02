@@ -40,7 +40,7 @@ public class PassEntity extends AuditingField{
     @Convert(converter = PassStatusConverter.class) @Column(nullable = false)
     private PassStatus status;
 
-    private LocalTime remainingPeriod;
+    private LocalTime remainingTime;
     private LocalDateTime startedAt;
     private LocalDateTime endedAt;
     private LocalDateTime expiredAt;
@@ -52,14 +52,15 @@ public class PassEntity extends AuditingField{
     private Set<EntranceEntity> entrances = new LinkedHashSet<>();
 
 
-    public static PassEntity of (UserEntity userEntity, PackageEntity packageEntity, PassStatus status, LocalDateTime startedAt, LocalDateTime endedAt){
-        return new PassEntity(userEntity, packageEntity, status, startedAt, endedAt);
+    public static PassEntity of (UserEntity userEntity, PackageEntity packageEntity, PassStatus status, LocalDateTime startedAt, LocalDateTime endedAt, LocalTime remainingTime){
+        return new PassEntity(userEntity, packageEntity, status, startedAt, endedAt, remainingTime);
     }
-    private PassEntity(UserEntity userEntity, PackageEntity packageEntity, PassStatus status, LocalDateTime startedAt, LocalDateTime endedAt) {
+    private PassEntity(UserEntity userEntity, PackageEntity packageEntity, PassStatus status, LocalDateTime startedAt, LocalDateTime endedAt, LocalTime remainingTime) {
         this.userEntity = userEntity;
         this.packageEntity = packageEntity;
         this.status = status;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
+        this.remainingTime = remainingTime;
     }
 }

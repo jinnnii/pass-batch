@@ -18,7 +18,7 @@ import org.mapstruct.factory.Mappers;
 public interface PassModelMapper {
     PassModelMapper INSTANCE = Mappers.getMapper(PassModelMapper.class);
     @Mapping(target = "status", qualifiedByName = "defaultStatus")
-    @Mapping(target = "remainingPeriod", source = "bulkPassEntity.period")
+    @Mapping(target = "remainingTime", source = "bulkPassEntity.time")
     PassEntity toPassEntity(BulkPassEntity bulkPassEntity);
 
     @Named("defaultStatus")

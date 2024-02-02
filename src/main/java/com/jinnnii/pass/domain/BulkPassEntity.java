@@ -30,7 +30,7 @@ public class BulkPassEntity extends AuditingField{
     @Column(nullable = false) @Convert(converter = BulkPassStatusConverter.class)
     private BulkPassStatus status;
 
-    private LocalTime period;
+    private LocalTime time;
 
     private LocalDateTime startedAt;
     private LocalDateTime endedAt;
@@ -39,11 +39,11 @@ public class BulkPassEntity extends AuditingField{
         return new BulkPassEntity(groupEntity, packageEntity, status, period, startedAt, endedAt);
     }
 
-    private BulkPassEntity(GroupEntity groupEntity, PackageEntity packageEntity, BulkPassStatus status, LocalTime period, LocalDateTime startedAt, LocalDateTime endedAt) {
+    private BulkPassEntity(GroupEntity groupEntity, PackageEntity packageEntity, BulkPassStatus status, LocalTime time, LocalDateTime startedAt, LocalDateTime endedAt) {
         this.groupEntity = groupEntity;
         this.packageEntity = packageEntity;
         this.status = status;
-        this.period = period;
+        this.time = time;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
     }
