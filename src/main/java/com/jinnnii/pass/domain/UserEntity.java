@@ -4,12 +4,17 @@ import com.jinnnii.pass.domain.constant.ActiveStatus;
 import com.jinnnii.pass.domain.constant.RoleType;
 import com.jinnnii.pass.domain.converter.ActiveStatusConverter;
 import com.jinnnii.pass.domain.converter.RoleTypeConverter;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
+import org.springframework.util.StringUtils;
 
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -33,8 +38,8 @@ public class UserEntity extends AuditingField{
     private String region;
     private Integer phone;
 
-    @Lob
-    private String meta;
+    @Setter @Lob @Type(JsonStringType.class)
+    private Map<String, Object> meta;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserGroupEntity> userGroups = new LinkedHashSet<>();
@@ -43,7 +48,7 @@ public class UserEntity extends AuditingField{
         return new UserEntity(userId, password, role,status, null, null,null);
     }
 
-    private UserEntity(String userId, String password, RoleType role, ActiveStatus status, String region, Integer phone, String meta) {
+    private UserEntity(String userId, String password, RoleType role, ActiveStatus status, String region, Integer phone, Map<String, Object> meta) {
         this.userId = userId;
         this.password = password;
         this.role = role;
@@ -51,5 +56,10 @@ public class UserEntity extends AuditingField{
         this.region = region;
         this.phone = phone;
         this.meta = meta;
+    }
+
+    public String getUuid() {
+        if (meta.containsKey("uuid")) return String.valueOf(meta.get("uuid"));
+        return null;
     }
 }
