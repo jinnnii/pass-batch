@@ -14,9 +14,9 @@ public class KakaoTalkAdapter {
 
     public KakaoTalkAdapter(KakaoTalkConfig config) {
         webClient = WebClient.builder()
-                .baseUrl(config.host())
+                .baseUrl(config.getHost())
                 .defaultHeaders(h->{
-                    h.setBearerAuth(config.token());
+                    h.setBearerAuth(config.getUuid());
                     h.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                 })
                 .build();
