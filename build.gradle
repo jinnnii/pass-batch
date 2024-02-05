@@ -39,6 +39,13 @@ dependencies {
 	// mapstruct
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+	// spring reactive web (WebClient)
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	// spring config processor : 사용자 정의 properties (@ConfigurationProperties)
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+	// hibernate-types (json string type)
+	implementation 'com.vladmihalcea:hibernate-types-60:2.21.1'
 }
 
 tasks.named('test') {

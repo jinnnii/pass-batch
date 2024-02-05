@@ -4,6 +4,7 @@ import com.jinnnii.pass.domain.constant.SeatType;
 import com.jinnnii.pass.domain.converter.SeatTypeConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 /**
  * [자리]
@@ -13,6 +14,7 @@ import lombok.ToString;
  */
 @Getter
 @Entity
+@NoArgsConstructor
 @ToString(callSuper = true)
 @Table(name = "seat")
 public class SeatEntity {
@@ -34,4 +36,14 @@ public class SeatEntity {
     @Column(nullable = false)
     private Integer y;
 
+    public static SeatEntity of(PlaceEntity placeEntity, String seatName, SeatType type, Integer x, Integer y){
+        return new SeatEntity(placeEntity, seatName, type, x, y);
+    }
+    private SeatEntity(PlaceEntity placeEntity, String seatName, SeatType type, Integer x, Integer y) {
+        this.placeEntity = placeEntity;
+        this.seatName = seatName;
+        this.type = type;
+        this.x = x;
+        this.y = y;
+    }
 }

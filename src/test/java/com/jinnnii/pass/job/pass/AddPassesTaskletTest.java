@@ -67,7 +67,7 @@ class AddPassesTaskletTest {
         assertEquals("A00000", passEntity.getUserEntity().getUserId());
         assertEquals(packageId, passEntity.getPackageEntity().getPackageId());
         assertEquals(PassStatus.READY, passEntity.getStatus());
-        assertEquals(period, passEntity.getRemainingPeriod());
+        assertEquals(period, passEntity.getRemainingTime());
     }
 
 

@@ -19,7 +19,17 @@ spring:
       # batch에 사용되는 sql 초기화 스크립트 실행
       # embeded의 경우 기본적으로 실행되는 데, always 설정을 하면 항상 활성화
       initialize-schema: always
+    job:
+      name: addPassesJob
 
 logging:
   level:
     org.hibernate.type.descriptor.sql: off # 바인딩되는 모든 파라미터 출력
+
+
+kakaotalk:
+  host: https://kapi.kakao.com
+  token: ${KAKAO_REST_API_TOKEN}
+
+server:
+  port: 8088
