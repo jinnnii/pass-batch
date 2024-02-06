@@ -4,7 +4,7 @@ import com.jinnnii.pass.domain.BulkPassEntity;
 import com.jinnnii.pass.domain.PassEntity;
 import com.jinnnii.pass.domain.UserEntity;
 import com.jinnnii.pass.domain.UserGroupEntity;
-import com.jinnnii.pass.domain.constant.BulkPassStatus;
+import com.jinnnii.pass.domain.constant.BulkStatus;
 import com.jinnnii.pass.domain.mapper.PassModelMapper;
 import com.jinnnii.pass.repository.BulkPassRepository;
 import com.jinnnii.pass.repository.PassRepository;
@@ -44,7 +44,7 @@ public class AddPassesTasklet implements Tasklet {
          */
 
         final LocalDateTime startedAt = LocalDateTime.now().minusDays(1);
-        List<BulkPassEntity> bulkPassList = bulkPassRepository.findByStatusAndStartedAtGreaterThan(BulkPassStatus.READY, startedAt);
+        List<BulkPassEntity> bulkPassList = bulkPassRepository.findByStatusAndStartedAtGreaterThan(BulkStatus.READY, startedAt);
 
         int count= 0;
         for (BulkPassEntity bulkPass : bulkPassList){
@@ -52,7 +52,7 @@ public class AddPassesTasklet implements Tasklet {
                     .stream().map(UserGroupEntity::getUser).toList();
             count += addPasses(bulkPass, userList);
 
-            bulkPass.setStatus(BulkPassStatus.COMPLETED);
+            bulkPass.setStatus(BulkStatus.COMPLETED);
         }
         log.info("이용권 {}건 추가 완료", count);
         return RepeatStatus.FINISHED;

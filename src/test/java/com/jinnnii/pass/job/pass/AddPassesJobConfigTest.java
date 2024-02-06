@@ -3,7 +3,7 @@ package com.jinnnii.pass.job.pass;
 import com.jinnnii.pass.config.TestBatchConfig;
 import com.jinnnii.pass.domain.*;
 import com.jinnnii.pass.domain.constant.ActiveStatus;
-import com.jinnnii.pass.domain.constant.BulkPassStatus;
+import com.jinnnii.pass.domain.constant.BulkStatus;
 import com.jinnnii.pass.domain.constant.PackageType;
 import com.jinnnii.pass.domain.constant.RoleType;
 import com.jinnnii.pass.repository.*;
@@ -62,7 +62,7 @@ class AddPassesJobConfigTest {
         GroupEntity groupEntity = getSavedTestGroup(5);
         PackageEntity packageEntity = getSavedTestPackage();
 
-        BulkPassEntity bulkPass = BulkPassEntity.of(groupEntity, packageEntity, BulkPassStatus.READY, LocalTime.of(4,0), now, tomorrow);
+        BulkPassEntity bulkPass = BulkPassEntity.of(groupEntity, packageEntity, BulkStatus.READY, LocalTime.of(4,0), now, tomorrow);
         bulkPassRepository.save(bulkPass);
     }
 

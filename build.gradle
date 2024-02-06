@@ -46,6 +46,8 @@ dependencies {
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 	// hibernate-types (json string type)
 	implementation 'com.vladmihalcea:hibernate-types-60:2.21.1'
+	// async item processor, writer
+	implementation 'org.springframework.batch:spring-batch-integration'
 }
 
 tasks.named('test') {

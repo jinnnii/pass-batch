@@ -2,6 +2,7 @@ package com.jinnnii.pass.job.notification;
 
 import com.jinnnii.pass.adapter.KakaoTalkAdapter;
 import com.jinnnii.pass.domain.NotificationEntity;
+import com.jinnnii.pass.adapter.KakaoTalkMessageRequest;
 import com.jinnnii.pass.repository.NotificationRepository;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
@@ -22,7 +23,8 @@ public class SendNotificationItemWriter implements ItemWriter<NotificationEntity
     @Override
     public void write(Chunk<? extends NotificationEntity> chunk) throws Exception {
         for (NotificationEntity notification : chunk.getItems()){
-            boolean succeed = kakaoTalkAdapter.sendKakaoTalkMessage(notification.getUuid(), notification.getText());
+            boolean succeed = kakaoTalkAdapter.sendKakaoTalkMessage(
+                    KakaoTalkMessageRequest.from(notification.getUuid(), notification.getText()));
 
             if(! succeed) return;
 

@@ -1,8 +1,6 @@
 package com.jinnnii.pass.adapter;
 
 import com.jinnnii.pass.config.KakaoTalkConfig;
-import com.jinnnii.pass.dto.request.KakaoTalkMessageRequest;
-import com.jinnnii.pass.dto.response.KakaoTalkMessageResponse;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -23,14 +21,13 @@ public class KakaoTalkAdapter {
     }
 
     /**
-     * [메시지 전송] 이용권 만료 10분 전 알림 전송
-     * @param uuid
-     * @param text
+     * [메시지 전송]
+     * @param request
      * @return
      */
-    public boolean sendKakaoTalkMessage(final String uuid, final String text){
+    public boolean sendKakaoTalkMessage(KakaoTalkMessageRequest request){
         KakaoTalkMessageResponse response = webClient.post().uri("/v1/api/talk/friends/message/default/send")
-                .body(BodyInserters.fromValue(KakaoTalkMessageRequest.from(uuid, text)))
+                .body(BodyInserters.fromValue(request))
                 .retrieve()//decoding
                 .bodyToMono(KakaoTalkMessageResponse.class)
                 .block();
@@ -38,4 +35,5 @@ public class KakaoTalkAdapter {
         if (response == null || response.successfulReceiverUuids()==null) return false;
         return response.successfulReceiverUuids().size() > 0;
     }
+
 }

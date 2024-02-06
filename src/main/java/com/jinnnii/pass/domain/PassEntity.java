@@ -37,6 +37,9 @@ public class PassEntity extends AuditingField{
     @ManyToOne(optional = false) @JoinColumn(name = "packageId")
     private PackageEntity packageEntity;
 
+    @ManyToOne(optional = false) @JoinColumn(name="placeId")
+    private PlaceEntity placeEntity;
+
     @Convert(converter = PassStatusConverter.class) @Column(nullable = false)
     private PassStatus status;
 
@@ -52,12 +55,13 @@ public class PassEntity extends AuditingField{
     private Set<EntranceEntity> entrances = new LinkedHashSet<>();
 
 
-    public static PassEntity of (UserEntity userEntity, PackageEntity packageEntity, PassStatus status, LocalDateTime startedAt, LocalDateTime endedAt, LocalTime remainingTime){
-        return new PassEntity(userEntity, packageEntity, status, startedAt, endedAt, remainingTime);
+    public static PassEntity of (UserEntity userEntity, PackageEntity packageEntity, PlaceEntity placeEntity, PassStatus status, LocalDateTime startedAt, LocalDateTime endedAt, LocalTime remainingTime){
+        return new PassEntity(userEntity, packageEntity, placeEntity, status, startedAt, endedAt, remainingTime);
     }
-    private PassEntity(UserEntity userEntity, PackageEntity packageEntity, PassStatus status, LocalDateTime startedAt, LocalDateTime endedAt, LocalTime remainingTime) {
+    private PassEntity(UserEntity userEntity, PackageEntity packageEntity, PlaceEntity placeEntity, PassStatus status, LocalDateTime startedAt, LocalDateTime endedAt, LocalTime remainingTime) {
         this.userEntity = userEntity;
         this.packageEntity = packageEntity;
+        this.placeEntity = placeEntity;
         this.status = status;
         this.startedAt = startedAt;
         this.endedAt = endedAt;

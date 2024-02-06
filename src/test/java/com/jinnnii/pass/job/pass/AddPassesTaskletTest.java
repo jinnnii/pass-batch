@@ -47,10 +47,10 @@ class AddPassesTaskletTest {
         GroupEntity groupEntity = getTestGroup(size);
         PackageEntity packageEntity = getTestPackage(packageId);
 
-        BulkPassEntity bulkPass = BulkPassEntity.of(groupEntity, packageEntity, BulkPassStatus.READY, period, now, tomorrow);
+        BulkPassEntity bulkPass = BulkPassEntity.of(groupEntity, packageEntity, BulkStatus.READY, period, now, tomorrow);
 
         //when
-        when(bulkPassRepository.findByStatusAndStartedAtGreaterThan(eq(BulkPassStatus.READY), any())).thenReturn(List.of(bulkPass));
+        when(bulkPassRepository.findByStatusAndStartedAtGreaterThan(eq(BulkStatus.READY), any())).thenReturn(List.of(bulkPass));
         RepeatStatus repeatStatus = addPassesTasklet.execute(stepContribution, chunkContext);
 
         //then

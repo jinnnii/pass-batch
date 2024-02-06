@@ -2,7 +2,9 @@ package com.jinnnii.pass.domain.mapper;
 
 import com.jinnnii.pass.domain.*;
 import com.jinnnii.pass.domain.constant.*;
+import com.jinnnii.pass.adapter.KakaoTalkMessageRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 class NotificationModelMapperTest {
     @Test
+    @DisplayName("[TEXT] 만료 10분 전 알림 발송")
     void test_mappingNotificationFromEntrance() {
         EntranceEntity entranceEntity = addEntranceEntities(1).get(0);
 
@@ -38,7 +41,7 @@ class NotificationModelMapperTest {
         for (int i =0; i<size; ++i){
             UserEntity userEntity = getTestUser(i);
             PassEntity pass = PassEntity.of(
-                    userEntity, packageEntity,
+                    userEntity, packageEntity, packageEntity.getPlaceEntity(),
                     PassStatus.PROGRESSED, now.minusDays(60), now.minusMinutes(10), LocalTime.of(4, 0));
 
             EntranceEntity entrance = EntranceEntity.of(pass, seatEntityList.get(i), ActiveStatus.ACTIVE, LocalDateTime.now());

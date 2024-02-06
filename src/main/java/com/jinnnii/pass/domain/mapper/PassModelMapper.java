@@ -2,9 +2,7 @@ package com.jinnnii.pass.domain.mapper;
 
 import com.jinnnii.pass.domain.BulkPassEntity;
 import com.jinnnii.pass.domain.PassEntity;
-import com.jinnnii.pass.domain.UserEntity;
-import com.jinnnii.pass.domain.constant.ActiveStatus;
-import com.jinnnii.pass.domain.constant.BulkPassStatus;
+import com.jinnnii.pass.domain.constant.BulkStatus;
 import com.jinnnii.pass.domain.constant.PassStatus;
 
 import org.mapstruct.Mapper;
@@ -22,7 +20,7 @@ public interface PassModelMapper {
     PassEntity toPassEntity(BulkPassEntity bulkPassEntity);
 
     @Named("defaultStatus")
-    default PassStatus status(BulkPassStatus status){
+    default PassStatus status(BulkStatus status){
         return PassStatus.READY;
     }
 }
