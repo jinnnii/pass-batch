@@ -61,7 +61,7 @@ class SendNotificationBeforeExpiredJobConfigTest {
         for (int i =0; i<size; ++i){
             UserEntity userEntity = getSavedTestUser(i);
             PassEntity pass = PassEntity.of(
-                    userEntity, packageEntity,
+                    userEntity, packageEntity, packageEntity.getPlaceEntity(),
                     PassStatus.PROGRESSED, now.minusDays(60), now.minusMinutes(10), LocalTime.of(4,0));
             passRepository.save(pass);
 

@@ -1,8 +1,8 @@
 package com.jinnnii.pass.domain.mapper;
 
-import com.jinnnii.pass.domain.EntranceEntity;
-import com.jinnnii.pass.domain.NotificationEntity;
+import com.jinnnii.pass.domain.*;
 import com.jinnnii.pass.domain.constant.NotificationEvent;
+import com.jinnnii.pass.adapter.KakaoTalkMessageRequest.*;
 import com.jinnnii.pass.dto.response.EntranceDto;
 import com.jinnnii.pass.util.LocalDateTimeUtils;
 import org.mapstruct.*;
@@ -15,20 +15,33 @@ public interface NotificationModelMapper {
     @Mapping(target = "uuid" , source = "entranceEntity.passEntity.userEntity.uuid")
     NotificationEntity toNotificationEntity(EntranceEntity entranceEntity, NotificationEvent event);
 
+    @Mapping(target = "uuid" , source = "userEntity.uuid")
+    @Mapping(target = "event" , source = "bulkNotification", qualifiedByName = "defaultEvent")
+    NotificationEntity toNotificationEntity(BulkNotificationEntity bulkNotification, UserEntity userEntity);
+
+    @Named("defaultEvent")
+    default NotificationEvent defaultEvent(BulkNotificationEntity bulkNotification){
+        return NotificationEvent.CUSTOM;
+    }
+
+
 
     @BeforeMapping
     default void notificationWithText(EntranceEntity entranceEntity, NotificationEvent event,
                                       @MappingTarget NotificationEntity notificationEntity){
         EntranceDto entranceDto = EntranceDtoMapper.INSTANCE.toEntranceDto(entranceEntity);
-        String text = switch (event){
+        TextObject textObject = switch (event){
             case BEFORE_EXPIRED -> beforeExpiredText(entranceDto);
             case AFTER_ENTERED -> afterEnteredText(entranceDto);
+            default -> throw new IllegalStateException("Unexpected value: " + event);
         };
-        notificationEntity.setText(text);
+
+        notificationEntity.setText(textObject);
     }
 
-    default String beforeExpiredText(EntranceDto entrance){
-        return String.format("""
+
+    default TextObject beforeExpiredText(EntranceDto entrance){
+        return TextObject.from(String.format("""
                 매장명 : %s
                                 
                 좌석 번호 : %s
@@ -37,10 +50,10 @@ public interface NotificationModelMapper {
                 연장하실 고객께서는 늦어도 5분 전까지 연장 결제 후 이용 부탁드립니다.
                 """,
                 entrance.placeName()
-                ,  entrance.seatName());
+                ,  entrance.seatName()), null, null);
     }
-    default String afterEnteredText(EntranceDto entrance){
-        return String.format("""
+    default TextObject afterEnteredText(EntranceDto entrance){
+        return TextObject.from(String.format("""
         매장명 : %s
                         
         결제 내역 : %s / %s 원
@@ -65,7 +78,7 @@ public interface NotificationModelMapper {
                 , entrance.seatName()
                 , entrance.remainingTime()==null
                         ? LocalDateTimeUtils.format(entrance.endedAt())
-                        : LocalDateTimeUtils.format(entrance.remainingTime()));
+                        : LocalDateTimeUtils.format(entrance.remainingTime())), entrance.qrCode(), "QR 코드");
     }
 
 }

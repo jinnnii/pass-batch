@@ -1,7 +1,7 @@
 package com.jinnnii.pass.domain;
 
-import com.jinnnii.pass.domain.constant.BulkPassStatus;
-import com.jinnnii.pass.domain.converter.BulkPassStatusConverter;
+import com.jinnnii.pass.domain.constant.BulkStatus;
+import com.jinnnii.pass.domain.converter.BulkStatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,19 +27,19 @@ public class BulkPassEntity extends AuditingField{
     @ManyToOne(optional = false) @JoinColumn(name = "packageId")
     private PackageEntity packageEntity;
 
-    @Column(nullable = false) @Convert(converter = BulkPassStatusConverter.class)
-    private BulkPassStatus status;
+    @Column(nullable = false) @Convert(converter = BulkStatusConverter.class)
+    private BulkStatus status;
 
     private LocalTime time;
 
     private LocalDateTime startedAt;
     private LocalDateTime endedAt;
 
-    public static BulkPassEntity of(GroupEntity groupEntity, PackageEntity packageEntity, BulkPassStatus status, LocalTime period, LocalDateTime startedAt, LocalDateTime endedAt){
+    public static BulkPassEntity of(GroupEntity groupEntity, PackageEntity packageEntity, BulkStatus status, LocalTime period, LocalDateTime startedAt, LocalDateTime endedAt){
         return new BulkPassEntity(groupEntity, packageEntity, status, period, startedAt, endedAt);
     }
 
-    private BulkPassEntity(GroupEntity groupEntity, PackageEntity packageEntity, BulkPassStatus status, LocalTime time, LocalDateTime startedAt, LocalDateTime endedAt) {
+    private BulkPassEntity(GroupEntity groupEntity, PackageEntity packageEntity, BulkStatus status, LocalTime time, LocalDateTime startedAt, LocalDateTime endedAt) {
         this.groupEntity = groupEntity;
         this.packageEntity = packageEntity;
         this.status = status;

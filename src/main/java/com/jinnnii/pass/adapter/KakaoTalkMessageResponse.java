@@ -1,4 +1,4 @@
-package com.jinnnii.pass.dto.response;
+package com.jinnnii.pass.adapter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
